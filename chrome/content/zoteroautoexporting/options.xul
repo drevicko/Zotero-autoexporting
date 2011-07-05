@@ -4,22 +4,29 @@
 <prefwindow title="Zotero autoexporting" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml">
 	<prefpane label="Zotero autoexporting">
 		<preferences>
+			<preference id="zotero-autoexporting-filestatus" name="extensions.zoteroautoexporting.filestatus" type="string" />
 			<preference id="zotero-autoexporting-filepath" name="extensions.zoteroautoexporting.filepath" type="string" />
-			<preference id="zotero-autoexporting-interval" name="extensions.zoteroautoexporting.interval" type="int" />
+			<preference id="zotero-autoexporting-fileinterval" name="extensions.zoteroautoexporting.fileinterval" type="int" />
 			<preference id="zotero-autoexporting-showdebug" name="extensions.zoteroautoexporting.showdebug" type="bool" />
-			<preference  id="zotero-autoexporting-deactivate" name="extensions.zoteroautoexporting.deactivate" type="bool" />
+			<preference  id="zotero-autoexporting-filedeactivate" name="extensions.zoteroautoexporting.filedeactivate" type="bool" />
 		</preferences>
 
        <groupbox>
 			<caption label="General settings"/>
 			<checkbox id="pref-showdebug" label="Log message to console to encounter problems" preference="zotero-autoexporting-showdebug"/>
-			<checkbox id="pref-deactivate"  label="Deactivate export automatically " preference="zotero-autoexporting-deactivate"/>
-			<label value="Path to file (C:\\example.bib)" control="zoteroautoexporting.filepath"/><textbox id="zoteroautoexporting.filepath" preference="zotero-autoexporting-filepath"/>
-			<label control="zoteroautoexporting.interval" value="minutes between saving"/><textbox id="zoteroautoexporting.interval" preference="zotero-autoexporting-interval"/>
+			
+		</groupbox>
+		 <groupbox>
+			<caption label="Export file by timer"/>
+			<checkbox id="pref-deactivate"  label="Deactivate this feature " preference="zotero-autoexporting-filedeactivate"/>
+			  <hbox align="left">
+			  <label class="thlabel" value="Path to file (C:\\example.bib)"  control="zoteroautoexporting.filepath"/><textbox id="zoteroautoexporting.filepath" size="40" preference="zotero-autoexporting-filepath"/></hbox>
+			    <hbox align="left"><label class="thlabel" control="zoteroautoexporting.fileinterval" orient="horizontal" value="Minutes between saving"/><textbox id="zoteroautoexporting.fileinterval" min="3" size="4" type="number" preference="zotero-autoexporting-fileinterval"/></hbox>
+			  <hbox align="left"><label class="thlabel"  value="Status: " orient="horizontal" control="zoteroautoexporting.filestatus"/><textbox id="zoteroautoexporting.filestatus" size="40" preference="zotero-autoexporting-filestatus" readonly="true"/></hbox>
 		</groupbox>
 		<groupbox>
 			<caption label="Support and feature requests"/>
-			<label>For suggestions, troubles or help , please inform on <label class="weblink" onclick="openLink('http://rokdd.de/:zotero');" value="my homepage"/> about current known issues . Write a comment there or use t homepage contact to report if necessary</label>
+			<label>For suggestions, troubles or help , please inform on <label class="weblink" onclick="openLink('http://rokdd.de/:zotero-autoexporting');" value="my homepage"/> about current known issues . Write a comment there or use t homepage contact to report if necessary</label>
 			</groupbox>
     </prefpane>
     <script>
