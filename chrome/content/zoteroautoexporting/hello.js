@@ -6,6 +6,7 @@
 		active:null,
 		fileintInterval: 1,
 		filepath:null,
+		filetranslator:null,
 		fileTimer:null,
 		init:function()
 			{
@@ -44,7 +45,18 @@
 					this.boolActivated=false;
 					this.log('Looks not like a valid path.. Sorry');
 					}
-		
+				var temp = this.prefManager.getCharPref("extensions.zoteroautoexporting.filetranslator");
+				
+				if(temp.length>4)
+					{
+					this.log('Filetranslator seems good');
+					this.filetranslator=temp;
+					}
+				else
+					{
+					this.boolActivated=false;
+					this.log('Looks not like a valid filetranslator.. Sorry');
+					}
 				var temp = this.prefManager.getIntPref("extensions.zoteroautoexporting.fileinterval");
 				if(temp<1)
 					{
@@ -80,7 +92,7 @@
 				
 				var expTranslator = new Zotero.Translate('export');
 				expTranslator.setLocation(file);
-				expTranslator.setTranslator('9cb70025-a888-4a29-a210-93ec52da40d4');
+				expTranslator.setTranslator(this.filetranslator);
 				this.log('translator runs');
 				expTranslator.translate();
 				var currentTime = new Date();
@@ -106,8 +118,7 @@ Zotero.AutoExporting.init();
 var myPrefObserver = {
   register: function() {
     // First we'll need the preference services to look for preferences.
-    var prefService = Components.classes["@mozilla.org/preferences-service;1"]
-                                .getService(Components.interfaces.nsIPrefService);
+    var prefService = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
 
     // For this._branch we ask that the preferences for extensions.myextension. and children
     this._branch = prefService.getBranch("extensions.zoteroautoexporting.");
