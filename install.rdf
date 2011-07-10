@@ -2,9 +2,9 @@
 <RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:em="http://www.mozilla.org/2004/em-rdf#">
 	<Description about="urn:mozilla:install-manifest">
 		<em:id>zotero-autoexport-bib@rokdd</em:id>
-		<em:name>Zotero bib autoexport </em:name>
-		<em:version>0.2</em:version>
-		<em:description>Exports bib files from Zotero</em:description>
+		<em:name>Zotero file autoexport </em:name>
+		<em:version>0.4</em:version>
+		<em:description>Exports files from Zotero</em:description>
 		<em:creator>Robert Kühn</em:creator>
 		<em:type>2</em:type> 
 		
