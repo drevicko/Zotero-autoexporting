@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="options.css" type="text/css"?>
+
+<prefwindow title="Zotero autoexporting" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml" onload="zotero_autoexporting_pref_init()">
+
+	<prefpane label="Zotero autoexporting" >
+		<preferences>
+			<preference id="zotero-autoexporting-filestatus" name="extensions.zoteroautoexporting.filestatus" type="string" />
+			<preference id="zotero-autoexporting-filepath" name="extensions.zoteroautoexporting.filepath" type="string" />
+			<preference id="zotero-autoexporting-fileinterval" name="extensions.zoteroautoexporting.fileinterval" type="int" />
+			<preference id="zotero-autoexporting-file-last" name="extensions.zoteroautoexporting.file-last" type="int" />
+			<preference id="zotero-autoexporting-file-bool-keep-interval" name="extensions.zoteroautoexporting.file-bool-keep-interval" type="bool" />
+			
+			<preference  id="zotero-autoexporting-filedeactivate" name="extensions.zoteroautoexporting.filedeactivate" type="bool" />
+			<preference  id="zotero-autoexporting-filetranslator" name="extensions.zoteroautoexporting.filetranslator" type="string" />
+			<preference id="zotero-autoexporting-showdebug" name="extensions.zoteroautoexporting.showdebug" type="bool" />
+		</preferences>
+
+       <groupbox>
+			<caption label="General settings"/>
+			<checkbox id="pref-showdebug" label="Log message to console to encounter problems" preference="zotero-autoexporting-showdebug"/>
+			
+		</groupbox>
+		 <groupbox>
+			<caption label="Export file by timer"/>
+			<checkbox id="pref-deactivate"  label="Deactivate this feature " preference="zotero-autoexporting-filedeactivate"/>
+			<checkbox id="pref-bool-keep-interval"  label="Try to keep the interval between startups " preference="zotero-autoexporting-file-bool-keep-interval"/>
+			  <hbox align="left"><label class="thlabel" value="Fileformat"  control="zoteroautoexporting.filetranslator"/>
+			    <menulist id="format-menu" oncommand="zotero_autoexporting_pref_save()">
+                             <menupopup id="format-popup"/>
+                 </menulist>
+			  </hbox>
+			  <hbox align="left"><label class="thlabel" value="Path to file (C:\\example.bib)"  control="zoteroautoexporting.filepath"/><textbox id="zoteroautoexporting.filepath" size="40" preference="zotero-autoexporting-filepath"/></hbox>
+			    <hbox align="left"><label class="thlabel" control="zoteroautoexporting.fileinterval" orient="horizontal" value="Minutes between saving"/><textbox id="zoteroautoexporting.fileinterval" min="3" size="4" type="number" preference="zotero-autoexporting-fileinterval"/></hbox>
+			  <hbox align="left"><label class="thlabel"  value="Status " orient="horizontal" control="zoteroautoexporting.filestatus"/><textbox id="zoteroautoexporting.filestatus" size="40" preference="zotero-autoexporting-filestatus" readonly="true"/></hbox>
+		</groupbox>
+		<groupbox>
+			<caption label="Support and feature requests"/>
+			<label>For suggestions, troubles or help , please inform on <label class="weblink" onclick="openLink('http://rokdd.de/:zotero-autoexporting');" value="my homepage"/> about current known issues . Write a comment there or use the homepage contact to report if necessary</label>
+			</groupbox>
+			 <script type="application/x-javascript" src="hello.js"/> 
+    </prefpane>
+    <script>
+    <![CDATA[
+
+function openLink(aUrl)
+	{
+	window.opener.openURL(aUrl);
+	}
+
+function zotero_autoexporting_pref_save()
+	{
+	var prefManager = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
+	prefManager.setCharPref("extensions.zoteroautoexporting.filetranslator",document.getElementById("format-menu").selectedItem.value);
+	}
+
+function zotero_autoexporting_pref_init()
+	{
+	var prefManager = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
+	var selectedTranslator= prefManager.getCharPref("extensions.zoteroautoexporting.filetranslator");
+	if ("undefined" == typeof(Zotero)) {
+		var Zotero = Components.classes["@zotero.org/Zotero;1"].getService(Components.interfaces.nsISupports).wrappedJSObject;
+	}
+	var translators = Zotero.Translators.getAllForType('export');
+	translators.sort(function(a, b) { return a.label.localeCompare(b.label) });
+	var formatPopup = document.getElementById("format-popup");
+	// add styles to format popup
+	for(var i in translators) {
+		var itemNode = document.createElement("menuitem");
+		itemNode.setAttribute("label", translators[i].label);
+		itemNode.setAttribute("value", translators[i].translatorID);
+		formatPopup.appendChild(itemNode);
+		
+		if(translators[i].translatorID == selectedTranslator) {
+			document.getElementById("format-menu").selectedIndex = i;
+		}
+		
+	}
+	}
+				
+    ]]>    
+    </script>
+
+</prefwindow>

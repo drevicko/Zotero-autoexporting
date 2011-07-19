@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://zoteroautoexporting/skin/overlay.css" type="text/css"?>
+<!DOCTYPE window SYSTEM "chrome://zoteroautoexporting/locale/hello.dtd">
+
+<overlay id="zoteroautoexporting-overlay"	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+	
+	<!-- Include the main extension logic -->
+	<script src="chrome://zoteroautoexporting/content/hello.js"/>
+</overlay>
