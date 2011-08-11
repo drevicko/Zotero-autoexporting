@@ -2,9 +2,9 @@
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <?xml-stylesheet href="options.css" type="text/css"?>
 
-<prefwindow title="Zotero autoexporting" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml" onload="zotero_autoexporting_pref_init()">
+<prefwindow title="Zotero autoexporting" id="zotero-autoexporting-window" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml">
 
-	<prefpane label="Zotero autoexporting" >
+	<prefpane label="Zotero autoexporting" id="zotero-autoexporting-panel-general" onpaneload="zotero_autoexporting_pref_init();">
 		<preferences>
 			<preference id="zotero-autoexporting-filestatus" name="extensions.zoteroautoexporting.filestatus" type="string" />
 			<preference id="zotero-autoexporting-filepath" name="extensions.zoteroautoexporting.filepath" type="string" />
@@ -78,7 +78,7 @@ function zotero_autoexporting_pref_init()
 		
 	}
 	}
-				
+
     ]]>    
     </script>
 
