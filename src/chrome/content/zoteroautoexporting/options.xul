@@ -8,6 +8,7 @@
 		<preferences>
 			<preference id="zotero-autoexporting-filestatus" name="extensions.zoteroautoexporting.filestatus" type="string" />
 			<preference id="zotero-autoexporting-filepath" name="extensions.zoteroautoexporting.filepath" type="string" />
+			<preference id="zotero-autoexporting-filenslfile" name="extensions.zoteroautoexporting.filenslfile" type="file"/>
 			<preference id="zotero-autoexporting-fileinterval" name="extensions.zoteroautoexporting.fileinterval" type="int" />
 			<preference id="zotero-autoexporting-file-last" name="extensions.zoteroautoexporting.file-last" type="int" />
 			<preference id="zotero-autoexporting-file-bool-keep-interval" name="extensions.zoteroautoexporting.file-bool-keep-interval" type="bool" />
@@ -31,7 +32,7 @@
                              <menupopup id="format-popup"/>
                  </menulist>
 			  </hbox>
-			  <hbox align="left"><label class="thlabel" value="Path to file (C:\\example.bib)"  control="zoteroautoexporting.filepath"/><textbox id="zoteroautoexporting.filepath" size="40" preference="zotero-autoexporting-filepath"/></hbox>
+			  <hbox align="left"><label class="thlabel" value="Path to file" /><textbox id="zoteroautoexporting.filepathvirtual" size="40" readonly="true"/><button oncommand="zotero_autoexporting_pref_select_file();" label="Browse file"/></hbox>
 			    <hbox align="left"><label class="thlabel" control="zoteroautoexporting.fileinterval" orient="horizontal" value="Minutes between saving"/><textbox id="zoteroautoexporting.fileinterval" min="3" size="4" type="number" preference="zotero-autoexporting-fileinterval"/></hbox>
 			  <hbox align="left"><label class="thlabel"  value="Status " orient="horizontal" control="zoteroautoexporting.filestatus"/><textbox id="zoteroautoexporting.filestatus" size="40" preference="zotero-autoexporting-filestatus" readonly="true"/></hbox>
 		</groupbox>
@@ -39,7 +40,7 @@
 			<caption label="Support and feature requests"/>
 			<label>For suggestions, troubles or help , please inform on <label class="weblink" onclick="openLink('http://rokdd.de/:zotero-autoexporting');" value="my homepage"/> about current known issues . Write a comment there or use the homepage contact to report if necessary</label>
 			</groupbox>
-			 <script type="application/x-javascript" src="hello.js"/> 
+			 <!--<script type="application/x-javascript" src="hello.js"/> -->
     </prefpane>
     <script>
     <![CDATA[
@@ -49,6 +50,23 @@ function openLink(aUrl)
 	window.opener.openURL(aUrl);
 	}
 
+function zotero_autoexporting_pref_select_file()
+	{
+	var nsIFilePicker = Components.interfaces.nsIFilePicker;
+	var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
+	fp.init(window, "Select a File", nsIFilePicker.modeSave);
+	//fp.displayDirectory='M:\\';
+	fp.appendFilters(nsIFilePicker.filterText | nsIFilePicker.filterAll);
+	var res = fp.show();
+	if (res == nsIFilePicker.returnOK || res == nsIFilePicker.returnReplace)
+		{
+		var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService).getBranch("extensions.zoteroautoexporting.");
+		prefs.setComplexValue("extensions.zoteroautoexporting.filenslfile", Components.interfaces.nsILocalFile, fp.file);
+		//update the textbox on prefs page
+		document.getElementById("zoteroautoexporting.filepathvirtual").value=fp.file.path;
+		}
+	}
+	
 function zotero_autoexporting_pref_save()
 	{
 	var prefManager = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
@@ -77,6 +95,13 @@ function zotero_autoexporting_pref_init()
 		}
 		
 	}
+	//setup the file textfield
+	
+	var temp=prefManager.getBranch("extensions.zoteroautoexporting.").getComplexValue("extensions.zoteroautoexporting.filenslfile", Components.interfaces.nsILocalFile);
+	if(temp.path.length>0)
+		document.getElementById("zoteroautoexporting.filepathvirtual").value=temp.path;
+	else
+		document.getElementById("zoteroautoexporting.filepathvirtual").value='not set yet';
 	}
 
     ]]>    
