@@ -12,6 +12,7 @@
 			<preference id="zotero-autoexporting-fileinterval" name="extensions.zoteroautoexporting.fileinterval" type="int" />
 			<preference id="zotero-autoexporting-file-last" name="extensions.zoteroautoexporting.file-last" type="int" />
 			<preference id="zotero-autoexporting-file-bool-keep-interval" name="extensions.zoteroautoexporting.file-bool-keep-interval" type="bool" />
+			<preference id="zotero-autoexporting-file-bool-collection-map" name="extensions.zoteroautoexporting.file-bool-collections-map" type="bool" />
 			
 			<preference  id="zotero-autoexporting-filedeactivate" name="extensions.zoteroautoexporting.filedeactivate" type="bool" />
 			<preference  id="zotero-autoexporting-filetranslator" name="extensions.zoteroautoexporting.filetranslator" type="string" />
@@ -27,6 +28,7 @@
 			<caption label="Export file by timer"/>
 			<checkbox id="pref-deactivate"  label="Deactivate this feature " preference="zotero-autoexporting-filedeactivate"/>
 			<checkbox id="pref-bool-keep-interval"  label="Try to keep the interval between startups " preference="zotero-autoexporting-file-bool-keep-interval"/>
+			<checkbox id="perf-file-bool-collection-map"  label="create additional files for every collection named by its name " preference="zotero-autoexporting-file-bool-collection-map"/>
 			  <hbox align="left"><label class="thlabel" value="Fileformat"  control="zoteroautoexporting.filetranslator"/>
 			    <menulist id="format-menu" oncommand="zotero_autoexporting_pref_save()">
                              <menupopup id="format-popup"/>
@@ -38,7 +40,7 @@
 		</groupbox>
 		<groupbox>
 			<caption label="Support and feature requests"/>
-			<label>For suggestions, troubles or help , please inform on <label class="weblink" onclick="openLink('http://rokdd.de/:zotero-autoexporting');" value="my homepage"/> about current known issues . Write a comment there or use the homepage contact to report if necessary</label>
+			<label>For suggestions, troubles or help , please inform on <label class="weblink" onclick="openLink('http://rokdd.de/permanent:zotero-autoexporting');" value="my homepage"/> about current known issues . Write a comment there or use the homepage contact to report if necessary</label>
 			</groupbox>
 			 <!--<script type="application/x-javascript" src="hello.js"/> -->
     </prefpane>
@@ -54,13 +56,17 @@ function zotero_autoexporting_pref_select_file()
 	{
 	var nsIFilePicker = Components.interfaces.nsIFilePicker;
 	var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
+	var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService).getBranch("extensions.zoteroautoexporting.");
 	fp.init(window, "Select a File", nsIFilePicker.modeSave);
-	//fp.displayDirectory='M:\\';
 	fp.appendFilters(nsIFilePicker.filterText | nsIFilePicker.filterAll);
+	if(prefs.prefHasUserValue('extensions.zoteroautoexporting.filenslfile'))
+			{
+			fp.displayDirectory = prefs.getComplexValue("extensions.zoteroautoexporting.filenslfile", Components.interfaces.nsILocalFile);
+			}
+	
 	var res = fp.show();
 	if (res == nsIFilePicker.returnOK || res == nsIFilePicker.returnReplace)
 		{
-		var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService).getBranch("extensions.zoteroautoexporting.");
 		prefs.setComplexValue("extensions.zoteroautoexporting.filenslfile", Components.interfaces.nsILocalFile, fp.file);
 		//update the textbox on prefs page
 		document.getElementById("zoteroautoexporting.filepathvirtual").value=fp.file.path;

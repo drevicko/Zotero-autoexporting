@@ -7,3 +7,4 @@ pref("extensions.zoteroautoexporting.filenslfile", '');
 pref("extensions.zoteroautoexporting.filestatus", 'No actions done');
 pref("extensions.zoteroautoexporting.file-last", 0);
 pref("extensions.zoteroautoexporting.file-bool-keep-interval", false);
+pref("extensions.zoteroautoexporting.file-bool-collections-map", false);

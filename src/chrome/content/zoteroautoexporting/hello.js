@@ -25,6 +25,7 @@ if("undefined" != typeof(Zotero) && "undefined" == typeof(Zotero.AutoExporting))
 		filelast:null,
 		filenslfile:null,
 		file_keep:false,
+		file_collections_map:false,
 		Prefs:{
 			},
 		init:function()
@@ -141,6 +142,7 @@ if("undefined" != typeof(Zotero) && "undefined" == typeof(Zotero.AutoExporting))
 			
 			this.filelast = this.prefManager.getIntPref("extensions.zoteroautoexporting.file-last");
 			this.file_keep = this.prefManager.getBoolPref("extensions.zoteroautoexporting.file-bool-keep-interval");
+			this.file_collections_map = this.prefManager.getBoolPref("extensions.zoteroautoexporting.file-bool-collections-map");
 			
 			if(this.boolActivated==false)
 				{
@@ -186,8 +188,30 @@ if("undefined" != typeof(Zotero) && "undefined" == typeof(Zotero.AutoExporting))
 				this.log('Translator for export now run..');
 				expTranslator.translate();
 				
+				//export the collections too
+				if(this.file_collections_map)
+					{
+					this.log('Export the collections');
+					var collections = Zotero.getCollections(null);
+					for (c in collections)
+						{
+						this.log('Exported collection ' + collections[c].name+'('+collections[c].id+')');
+						expTranslator.setCollection(collections[c]);
+						var tempFile=this.filenslfile.clone();
+						//setup the new filenames from collection name
+						tempFile.leafName=collections[c].name+((/[.]/.exec(this.filenslfile.leafName)) ? '.'+/[^.]+$/.exec(this.filenslfile.leafName) : '');
+						expTranslator.setLocation(tempFile);
+						
+						//now translate 
+						expTranslator.translate();
+						}
+					var strTextAdd='(+collections) ';
+					}
+				else
+					var strTextAdd='';
+				
 				var currentTime = new Date();
-				this.log('Exported  '+currentTime.getDate()+'.'+(currentTime.getMonth() + 1)+'.'+currentTime.getFullYear()+'  '+currentTime.getHours()+':'+(( currentTime.getMinutes() < 10 ? "0" : "" ) + currentTime.getMinutes()),true);
+				this.log('Exported '+strTextAdd+currentTime.getDate()+'.'+(currentTime.getMonth() + 1)+'.'+currentTime.getFullYear()+'  '+currentTime.getHours()+':'+(( currentTime.getMinutes() < 10 ? "0" : "" ) + currentTime.getMinutes()),true);
 				this.prefManager.setIntPref("extensions.zoteroautoexporting.file-last",currentTime.getTime());
 				}
 			else

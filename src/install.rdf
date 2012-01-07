@@ -3,31 +3,33 @@
 	<Description about="urn:mozilla:install-manifest">
 		<em:id>zotero-autoexport-bib@rokdd</em:id>
 		<em:name>Zotero file autoexport </em:name>
-		<em:version>0.6</em:version>
+		<em:version>0.8</em:version>
 		<em:description>Exports files from Zotero</em:description>
 		<em:creator>Robert Kühn</em:creator>
 		<em:type>2</em:type> 
-		<em:homepageURL>http://rokdd.de/:zotero-autoexport</em:homepageURL>
+		<em:homepageURL>http://rokdd.de/permanent:zotero-autoexporting</em:homepageURL>
 		<em:optionsURL>chrome://zoteroautoexporting/content/options.xul</em:optionsURL>
-		<em:updateInfoURL>http://rokdd.de/:zotero-autoexport</em:updateInfoURL>
-		<!-- Requires Zotero -->
-		<em:requires>
-			<Description>
-				<em:id>zotero@chnm.gmu.edu</em:id>
-				<em:name>Zotero</em:name>
-				<em:homepageURL>http://www.zotero.org</em:homepageURL>
-				<em:minVersion>1.0.0b4.r5</em:minVersion>
-				<em:maxVersion>2.4.*</em:maxVersion>
-			</Description>
-		</em:requires>
-    
-		<!-- Requires Firefox -->
-		<em:targetApplication>
-			<Description>
-				<em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
-				<em:minVersion>2.0</em:minVersion>
-				<em:maxVersion>7.*</em:maxVersion>
-			</Description>
-		</em:targetApplication>
+		<em:updateInfoURL>http://rokdd.de/permanent:zotero-autoexporting</em:updateInfoURL>
+    <em:targetApplication>
+      <Description>
+        <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
+        <em:minVersion>3.0</em:minVersion>
+        <em:maxVersion>10.*</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+	<em:targetApplication>
+		<Description>
+			<em:id>zotero@chnm.gmu.edu</em:id>
+			<em:minVersion>3.0b1</em:minVersion>
+			<em:maxVersion>3.0.*</em:maxVersion>
+		</Description>
+	</em:targetApplication> 
+	<em:requires>
+	   <Description>
+	     <em:id>zotero@chnm.gmu.edu</em:id>
+	     <em:minVersion>1.*</em:minVersion>
+	     <em:maxVersion>3.*</em:maxVersion>
+	   </Description>
+	 </em:requires>	
 	</Description>
 </RDF>
