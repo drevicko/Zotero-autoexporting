@@ -2,115 +2,41 @@
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <?xml-stylesheet href="options.css" type="text/css"?>
 
-<prefwindow title="Zotero autoexporting" id="zotero-autoexporting-window" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml">
-
-	<prefpane label="Zotero autoexporting" id="zotero-autoexporting-panel-general" onpaneload="zotero_autoexporting_pref_init();">
-		<preferences>
-			<preference id="zotero-autoexporting-filestatus" name="extensions.zoteroautoexporting.filestatus" type="string" />
-			<preference id="zotero-autoexporting-filepath" name="extensions.zoteroautoexporting.filepath" type="string" />
-			<preference id="zotero-autoexporting-filenslfile" name="extensions.zoteroautoexporting.filenslfile" type="file"/>
-			<preference id="zotero-autoexporting-fileinterval" name="extensions.zoteroautoexporting.fileinterval" type="int" />
-			<preference id="zotero-autoexporting-file-last" name="extensions.zoteroautoexporting.file-last" type="int" />
-			<preference id="zotero-autoexporting-file-bool-keep-interval" name="extensions.zoteroautoexporting.file-bool-keep-interval" type="bool" />
-			<preference id="zotero-autoexporting-file-bool-collection-map" name="extensions.zoteroautoexporting.file-bool-collections-map" type="bool" />
-			
-			<preference  id="zotero-autoexporting-filedeactivate" name="extensions.zoteroautoexporting.filedeactivate" type="bool" />
-			<preference  id="zotero-autoexporting-filetranslator" name="extensions.zoteroautoexporting.filetranslator" type="string" />
-			<preference id="zotero-autoexporting-showdebug" name="extensions.zoteroautoexporting.showdebug" type="bool" />
-		</preferences>
+    <dialog title="Zotero autoexporting" id="zotero-autoexporting-window" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" buttons="disclosure,extra2,accept,cancel" buttonlabelextra2="Apply settings and run manually for test" ondialogextra2="pref_handler.test_export();" buttonlabeldisclosure="Donate / Support / Changelog" ondialogdisclosure="pref_handler.open_url('http://rokdd.de/permanent:zotero-autoexporting');" onload="pref_handler.loadPrefs()"  ondialogcancel="pref_handler.onCancel();" ondialogaccept="pref_handler.onAccept();">
+	
+	<prefpane label="Zotero autoexporting" id="zotero-autoexporting-panel-general">
 
        <groupbox>
 			<caption label="General settings"/>
-			<checkbox id="pref-showdebug" label="Log message to console to encounter problems" preference="zotero-autoexporting-showdebug"/>
+			<checkbox label="Log message to console to encounter problems" id="zotero-autoexporting-showdebug"/>
 			
 		</groupbox>
 		 <groupbox>
 			<caption label="Export file by timer"/>
-			<checkbox id="pref-deactivate"  label="Deactivate this feature " preference="zotero-autoexporting-filedeactivate"/>
-			<checkbox id="pref-bool-keep-interval"  label="Try to keep the interval between startups " preference="zotero-autoexporting-file-bool-keep-interval"/>
-			<checkbox id="perf-file-bool-collection-map"  label="create additional files for every collection named by its name " preference="zotero-autoexporting-file-bool-collection-map"/>
+			<label>NEW: If you are not sure whether your options will work, you can use the test function on the bottom of this panel</label>
+			<checkbox  label="Deactivate this feature " id="zotero-autoexporting-filedeactivate"/>
+			<checkbox  label="Try to keep the interval between startups " id="zotero-autoexporting-file-bool-keep-interval"/>
+			<checkbox label="create additional files for every collection named by its name " id="zotero-autoexporting-file-bool-collection-map"/>
 			  <hbox align="left"><label class="thlabel" value="Fileformat"  control="zoteroautoexporting.filetranslator"/>
-			    <menulist id="format-menu" oncommand="zotero_autoexporting_pref_save()">
+			    <menulist id="format-menu">
                              <menupopup id="format-popup"/>
                  </menulist>
 			  </hbox>
-			  <hbox align="left"><label class="thlabel" value="Path to file" /><textbox id="zoteroautoexporting.filepathvirtual" size="40" readonly="true"/><button oncommand="zotero_autoexporting_pref_select_file();" label="Browse file"/></hbox>
-			    <hbox align="left"><label class="thlabel" control="zoteroautoexporting.fileinterval" orient="horizontal" value="Minutes between saving"/><textbox id="zoteroautoexporting.fileinterval" min="3" size="4" type="number" preference="zotero-autoexporting-fileinterval"/></hbox>
-			  <hbox align="left"><label class="thlabel"  value="Status " orient="horizontal" control="zoteroautoexporting.filestatus"/><textbox id="zoteroautoexporting.filestatus" size="40" preference="zotero-autoexporting-filestatus" readonly="true"/></hbox>
+			  <hbox align="left"><label class="thlabel" value="Path to file" /><textbox id="zoteroautoexporting.filepathvirtual" size="40" readonly="true"/><button oncommand="pref_handler.select_file('extensions.zoteroautoexporting.filenslfile','zoteroautoexporting.filepathvirtual','save');" label="Browse file"/><button oncommand="pref_handler.reset_file('extensions.zoteroautoexporting.filenslfile','zoteroautoexporting.filepathvirtual');" label="Reset file"/></hbox>
+			    <hbox align="left"><label class="thlabel" control="zoteroautoexporting.fileinterval" orient="horizontal" value="Minutes between saving"/><textbox  min="3" size="4" type="number" id="zotero-autoexporting-fileinterval"/></hbox>
+			  <hbox align="left"><label class="thlabel"  value="Status " orient="horizontal" control="zoteroautoexporting.filestatus"/><textbox id="zoteroautoexporting.filestatus" size="60" rows="10" cols="120" multiline="true" readonly="true"/></hbox>
+			  <!--<button label="Reload log" oncommand="pref_handler.init_status();"/>-->
 		</groupbox>
-		<groupbox>
-			<caption label="Support and feature requests"/>
-			<label>For suggestions, troubles or help , please inform on <label class="weblink" onclick="openLink('http://rokdd.de/permanent:zotero-autoexporting');" value="my homepage"/> about current known issues . Write a comment there or use the homepage contact to report if necessary</label>
-			</groupbox>
-			 <!--<script type="application/x-javascript" src="hello.js"/> -->
+	 <groupbox>
+			<caption label="After export: Postprocess"/>
+			<checkbox label="Deactivate this feature " id="zotero-autoexporting-postprocess-bool"/>
+<hbox align="left"><label class="thlabel" value="Path to file" /><textbox id="zoteroautoexporting.postprocesspathvirtual" size="40" readonly="true"/><button oncommand="pref_handler.select_file('extensions.zoteroautoexporting.postprocessfile','zoteroautoexporting.postprocesspathvirtual','select');" label="Browse file"/>
+<button oncommand="pref_handler.reset_file('extensions.zoteroautoexporting.postprocessfile','zoteroautoexporting.postprocesspathvirtual');" label="Reset file"/></hbox>
+		</groupbox>
+	<groupbox>
+			<caption label="Test your settings"/>
+			<label>You are able to test your settings with button below. You should get a message if process finished and a detailed log into the box above. Please note that it will work like normal and overrides or all files!</label>
+		</groupbox>
+			 <script type="application/x-javascript" src="commons.js"/>
     </prefpane>
-    <script>
-    <![CDATA[
-
-function openLink(aUrl)
-	{
-	window.opener.openURL(aUrl);
-	}
-
-function zotero_autoexporting_pref_select_file()
-	{
-	var nsIFilePicker = Components.interfaces.nsIFilePicker;
-	var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
-	var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService).getBranch("extensions.zoteroautoexporting.");
-	fp.init(window, "Select a File", nsIFilePicker.modeSave);
-	fp.appendFilters(nsIFilePicker.filterText | nsIFilePicker.filterAll);
-	if(prefs.prefHasUserValue('extensions.zoteroautoexporting.filenslfile'))
-			{
-			fp.displayDirectory = prefs.getComplexValue("extensions.zoteroautoexporting.filenslfile", Components.interfaces.nsILocalFile);
-			}
-	
-	var res = fp.show();
-	if (res == nsIFilePicker.returnOK || res == nsIFilePicker.returnReplace)
-		{
-		prefs.setComplexValue("extensions.zoteroautoexporting.filenslfile", Components.interfaces.nsILocalFile, fp.file);
-		//update the textbox on prefs page
-		document.getElementById("zoteroautoexporting.filepathvirtual").value=fp.file.path;
-		}
-	}
-	
-function zotero_autoexporting_pref_save()
-	{
-	var prefManager = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
-	prefManager.setCharPref("extensions.zoteroautoexporting.filetranslator",document.getElementById("format-menu").selectedItem.value);
-	}
-
-function zotero_autoexporting_pref_init()
-	{
-	var prefManager = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
-	var selectedTranslator= prefManager.getCharPref("extensions.zoteroautoexporting.filetranslator");
-	if ("undefined" == typeof(Zotero)) {
-		var Zotero = Components.classes["@zotero.org/Zotero;1"].getService(Components.interfaces.nsISupports).wrappedJSObject;
-	}
-	var translators = Zotero.Translators.getAllForType('export');
-	translators.sort(function(a, b) { return a.label.localeCompare(b.label) });
-	var formatPopup = document.getElementById("format-popup");
-	// add styles to format popup
-	for(var i in translators) {
-		var itemNode = document.createElement("menuitem");
-		itemNode.setAttribute("label", translators[i].label);
-		itemNode.setAttribute("value", translators[i].translatorID);
-		formatPopup.appendChild(itemNode);
-		
-		if(translators[i].translatorID == selectedTranslator) {
-			document.getElementById("format-menu").selectedIndex = i;
-		}
-		
-	}
-	//setup the file textfield
-	
-	var temp=prefManager.getBranch("extensions.zoteroautoexporting.").getComplexValue("extensions.zoteroautoexporting.filenslfile", Components.interfaces.nsILocalFile);
-	if(temp.path.length>0)
-		document.getElementById("zoteroautoexporting.filepathvirtual").value=temp.path;
-	else
-		document.getElementById("zoteroautoexporting.filepathvirtual").value='not set yet';
-	}
-
-    ]]>    
-    </script>
-
-</prefwindow>
+</dialog>
