@@ -1,5 +1,5 @@
 content	zoteroautoexporting				chrome/content/zoteroautoexporting/
 locale	zoteroautoexporting	en-US		chrome/locale/en-US/zoteroautoexporting/
 skin	zoteroautoexporting	default		chrome/skin/default/zoteroautoexporting/
-overlay	chrome://browser/content/browser.xul chrome://zoteroautoexporting/content/overlay.xul
+overlay	chrome://browser/content/browser.xul chrome://zoteroautoexporting/content/toolbar.xul
 overlay	chrome://zotero/content/zoteroPane.xul chrome://zoteroautoexporting/content/overlay.xul

@@ -1,11 +1,13 @@
-.weblink
-	{
-	color:blue;
-	}
-	
-.thlabel
-	{
-	font-weight:bold;
-	width:200px;
-	float:right;
-	}
+.weblink { color:blue; }
+
+.thlabel { font-weight:bold; width:200px; float:right; }
+
+#zotero-autoexporting-window
+{
+
+}
+
+#zotero-autoexporting-panel-general
+{
+
+}
